@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html<meta charset="UTF-8"><html lang="fr">
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
 <title>Tressage Ailleurs – Panier</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -171,7 +173,7 @@ nav a{
 
         <div class="promo">
             <label>Code promotionnel</label>
-            <input id="codePromo" placeholder="TRESSAGE">
+            <input id="codePromo" placeholder="PROMO10">
             <button onclick="appliquerPromo()">Appliquer</button>
         </div>
 
@@ -236,26 +238,20 @@ function recalculer(){
         (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
 }
 
-/* ✅ NOUVEAU SYSTÈME DE CODE PROMO */
 function appliquerPromo(){
     remise = 0;
     fraisFixes = 3;
-
-    const code = document
-        .getElementById("codePromo")
-        .value
-        .trim()
-        .toUpperCase();
-
-    const sousTotalBrut = panier.reduce((s,p)=>s+p.prix,0);
+    const code = document.getElementById("codePromo").value.trim().toUpperCase();
 
     if(code === "TRESSAGE"){
-        remise = sousTotalBrut * 0.10;
-        alert("✅ Code TRESSAGE appliqué : -10 %");
-    } else {
-        alert("❌ Code promotionnel invalide");
+        remise = panier.reduce((s,p)=>s+p.prix,0) * 0.10;
+        alert("Code Tressage appliqué");
+    }else if(code === "LIVRAISON"){
+        fraisFixes = 0;
+        alert("🎉 Livraison offerte");
+    }else{
+        alert("Code invalide");
     }
-
     recalculer();
 }
 
@@ -265,13 +261,24 @@ function supprimer(index){
     afficherPanier();
 }
 
+/* ✅ SEULE MODIFICATION : ENREGISTREMENT DES COMMANDES */
 function finaliserCommande(){
     if(panier.length === 0){
         alert("Votre panier est vide");
         return;
     }
 
+    const commandes = JSON.parse(localStorage.getItem("commandes")) || [];
+
+    commandes.push({
+        date: new Date().toLocaleString(),
+        produits: panier,
+        total: document.getElementById("total").textContent
+    });
+
+    localStorage.setItem("commandes", JSON.stringify(commandes));
     localStorage.removeItem("panier");
+
     document.getElementById("zonePanier").style.display = "none";
     document.getElementById("confirmation").style.display = "block";
 }
@@ -281,4 +288,3 @@ afficherPanier();
 
 </body>
 </html>
-<head>
