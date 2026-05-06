@@ -148,6 +148,7 @@ nav a{
     <p>Récapitulatif de votre commande</p>
 </header>
 
+<!-- ✅ MENU CORRECT ET VISIBLE -->
 <nav>
     <a href="index.html">Accueil</a>
     <a href="articles.html">Articles</a>
@@ -157,7 +158,6 @@ nav a{
 
 <div class="container">
 
-<!-- ZONE PANIER -->
 <div id="zonePanier" class="panier">
 
     <div class="produits">
@@ -186,12 +186,11 @@ nav a{
 
 </div>
 
-<!-- PAGE MERCI -->
 <div id="confirmation" class="confirmation">
     <h2>Merci pour votre commande</h2>
     <p>
-        Celle‑ci sera envoyée sous <strong>72 heures</strong> pour les articles<br>
-        et en <strong>début de mois</strong> pour les box abonnements.
+        Un email s’est ouvert pour confirmer la commande.<br>
+        Vous pouvez maintenant nous contacter si besoin.
     </p>
 </div>
 
@@ -201,7 +200,6 @@ nav a{
 let panier = JSON.parse(localStorage.getItem("panier")) || [];
 let remise = 0;
 let fraisFixes = 3;
-
 const zone = document.getElementById("listeProduits");
 
 function afficherPanier(){
@@ -245,10 +243,8 @@ function appliquerPromo(){
 
     if(code === "TRESSAGE"){
         remise = panier.reduce((s,p)=>s+p.prix,0) * 0.10;
-        alert("Code Tressage appliqué");
-    }else if(code === "LIVRAISON"){
-        fraisFixes = 0;
-        alert("🎉 Livraison offerte");
+          fraisFixes = 0;
+        alert("Livraison offerte");
     }else{
         alert("Code invalide");
     }
@@ -261,24 +257,25 @@ function supprimer(index){
     afficherPanier();
 }
 
-/* ✅ SEULE MODIFICATION : ENREGISTREMENT DES COMMANDES */
+/* ✅ ENVOI PAR EMAIL */
 function finaliserCommande(){
     if(panier.length === 0){
         alert("Votre panier est vide");
         return;
     }
 
-    const commandes = JSON.parse(localStorage.getItem("commandes")) || [];
-
-    commandes.push({
-        date: new Date().toLocaleString(),
-        produits: panier,
-        total: document.getElementById("total").textContent
+    let message = "Nouvelle commande – Tressage Ailleurs\n\n";
+    panier.forEach(p=>{
+        message += `- ${p.nom} : ${p.prix} €\n`;
     });
+    message += "\nTOTAL : " + document.getElementById("total").textContent;
 
-    localStorage.setItem("commandes", JSON.stringify(commandes));
+    window.location.href =
+        "mailto:Tressageailleur@gmail.com"
+        + "?subject=" + encodeURIComponent("Nouvelle commande – Tressage Ailleurs")
+        + "&body=" + encodeURIComponent(message);
+
     localStorage.removeItem("panier");
-
     document.getElementById("zonePanier").style.display = "none";
     document.getElementById("confirmation").style.display = "block";
 }
