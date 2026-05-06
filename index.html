@@ -18,12 +18,12 @@ body{
 header{
     background:#3a2d28;
     color:white;
-    padding:30px;
+    padding:30px 20px;
     text-align:center;
 }
 
 header img{
-    width:200px;        /* taille desktop */
+    width:200px;
     height:auto;
     display:block;
     margin:0 auto 15px auto;
@@ -36,6 +36,7 @@ header h1{
 
 header p{
     margin-top:8px;
+    font-size:16px;
 }
 
 /* MENU */
@@ -57,25 +58,63 @@ nav a{
     font-weight:bold;
 }
 
-/* ✅ CORRECTION MOBILE */
-@media (max-width: 600px){
+/* CONTENU */
+main{
+    max-width:1000px;
+    margin:60px auto;
+    padding:0 20px;
+    text-align:center;
+}
 
-    header{
-        padding:20px 15px;
-    }
+.intro{
+    font-size:18px;
+    line-height:1.6;
+    margin-bottom:50px;
+}
 
+.cartes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:30px;
+}
+
+.carte{
+    background:white;
+    padding:30px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    text-decoration:none;
+    color:#333;
+    transition:transform 0.2s ease;
+}
+
+.carte:hover{
+    transform:translateY(-5px);
+}
+
+.carte h3{
+    color:#3a2d28;
+}
+
+/* FOOTER */
+footer{
+    background:#3a2d28;
+    color:white;
+    text-align:center;
+    padding:25px;
+    margin-top:60px;
+}
+
+/* MOBILE */
+@media (max-width:600px){
     header img{
-        width:120px;          /* ✅ logo réduit sur mobile */
-        margin-bottom:12px;
+        width:120px;
     }
-
     header h1{
-        font-size:22px;       /* ✅ titre lisible */
-        line-height:1.2;
+        font-size:22px;
     }
-
-    header p{
-        font-size:14px;
+    .intro{
+        font-size:16px;
     }
 }
 </style>
@@ -95,6 +134,32 @@ nav a{
     <a href="abonnements.html">Abonnements</a>
     <a href="panier.html">Panier</a>
 </nav>
+
+<main>
+    <div class="intro">
+        <p>
+            Bienvenue dans l’univers de <strong>Tressage Ailleurs</strong>.<br>
+            Ici, chaque création est réalisée à la main, avec patience,
+            attention et le plaisir de faire.
+        </p>
+    </div>
+
+    <div class="cartes">
+        <a href="articles.html" class="carte">
+            <h3>Découvrir les articles</h3>
+            <p>Bracelets, créations textiles et pièces uniques.</p>
+        </a>
+
+        <a href="abonnements.html" class="carte">
+            <h3>Box & abonnements</h3>
+            <p>Recevez régulièrement une création surprise.</p>
+        </a>
+    </div>
+</main>
+
+<footer>
+    © Tressage Ailleurs – Artisanat fait avec cœur
+</footer>
 
 </body>
 </html>
