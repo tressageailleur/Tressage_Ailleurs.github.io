@@ -2,228 +2,107 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Tressage Ailleurs – Abonnements</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abonnements – Tressage Ailleurs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f6f1ee;
-    color: #333;
+body{margin:0;font-family:Arial,sans-serif;background:#f6f1ee;color:#333}
+header{background:#3a2d28;color:white;text-align:center;padding:30px}
+header img{width:180px;margin:0 auto 15px;display:block}
+nav{
+    background:#5a463d;
+    padding:15px;
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap
 }
-
-/* HEADER */
-header {
-    position: relative;
-    background: #3a2d28;
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
+nav a{
+    background:white;
+    color:#3a2d28;
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:bold
 }
-
-.logo {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    width: 110px;
-    background: white;
-    border-radius: 50%;
-    padding: 6px;
+main{
+    max-width:1000px;
+    margin:40px auto;
+    padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px
 }
-
-/* MENU */
-nav {
-    background: #5a463d;
-    padding: 18px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
+.offre{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    text-align:center
 }
-
-nav a {
-    background: #f6f1ee;
-    color: #3a2d28;
-    padding: 10px 18px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
+.offre img{
+    width:100%;
+    max-width:220px;
+    object-fit:contain;
+    background:#eee
 }
-
-nav a:hover {
-    background: #e6dad3;
+button{
+    margin-top:15px;
+    padding:10px 18px;
+    background:#3a2d28;
+    color:white;
+    border:none;
+    border-radius:6px;
+    cursor:pointer
 }
-
-/* CONTENU */
-.container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 50px 20px;
-}
-
-.abonnements {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-}
-
-/* CARTE ABONNEMENT */
-.abo {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    overflow: hidden;
-    text-align: center;
-}
-
-.abo img {
-    width: 100%;
-    height: 200px;
-    object-fit: contain;
-    background: #eee;
-}
-
-.abo .texte {
-    padding: 20px;
-}
-
-.prix {
-    font-weight: bold;
-    font-size: 18px;
-    margin: 12px 0;
-}
-
-button {
-    background: #3a2d28;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #5a463d;
-}
-
-/* FOOTER */
-footer {
-    background: #3a2d28;
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
-
-/* PANIER FLOTTANT */
-.panier-flottant {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #3a2d28;
-    color: white;
-    padding: 14px 20px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.panier-flottant:hover {
-    background: #5a463d;
+@media(max-width:600px){
+    header img{width:120px}
 }
 </style>
-
-<!-- 🔐 PRIX DES ABONNEMENTS (MODIFIABLES PAR TOI) -->
-<script>
-const PRIX_ABO_1 = 10;
-const PRIX_ABO_3 = 24;
-const PRIX_ABO_6 = 42;
-</script>
 </head>
 
 <body>
 
 <header>
-    <img src="logo.png" alt="Logo" class="logo">
-    <h1>Tressage Ailleurs</h1>
-    <p>Abonnements – Box bracelets artisanaux</p>
+    <img src="logo.png" alt="Logo Tressage Ailleurs">
+    <h1>Abonnements</h1>
 </header>
 
 <nav>
     <a href="index.html">Accueil</a>
-    <a href="presentation.html">Présentation</a>
     <a href="articles.html">Articles</a>
     <a href="abonnements.html">Abonnements</a>
-    <a href="panier.html">🛒 Panier</a>
+    <a href="panier.html">Panier</a>
 </nav>
 
-<div class="container">
-    <div class="abonnements">
+<main>
 
-        <!-- ABONNEMENT 1 MOIS -->
-        <div class="abo">
-            <img src="box-abonnement.jpg" alt="Box abonnement 1 mois">
-            <div class="texte">
-                <h3>Abonnement 1 mois</h3>
-                <p class="prix" id="prix1"></p>
-                <p>Découvrir l’univers Tressage Ailleurs.</p>
-                <button onclick="ajouterAuPanier('Abonnement 1 mois', PRIX_ABO_1)">
-                    Ajouter au panier
-                </button>
-            </div>
-        </div>
-
-        <!-- ABONNEMENT 3 MOIS -->
-        <div class="abo">
-            <img src="box-abonnement.jpg" alt="Box abonnement 3 mois">
-            <div class="texte">
-                <h3>Abonnement 3 mois</h3>
-                <p class="prix" id="prix3"></p>
-                <p>Soit 7 € par mois.</p>
-                <button onclick="ajouterAuPanier('Abonnement 3 mois', PRIX_ABO_3)">
-                    Ajouter au panier
-                </button>
-            </div>
-        </div>
-
-        <!-- ABONNEMENT 6 MOIS -->
-        <div class="abo">
-            <img src="box-abonnement.jpg" alt="Box abonnement 6 mois">
-            <div class="texte">
-                <h3>Abonnement 6 mois</h3>
-                <p class="prix" id="prix6"></p>
-                <p>Soit 8 € par mois.</p>
-                <button onclick="ajouterAuPanier('Abonnement 6 mois', PRIX_ABO_6)">
-                    Ajouter au panier
-                </button>
-            </div>
-        </div>
-
-    </div>
+<div class="offre">
+    <img src="box-abonnement.jpg" alt="Box 1 mois">
+    <h3>Box – 1 mois</h3>
+    <p><strong>10 €</strong></p>
+    <button onclick="ajouter('Box abonnement – 1 mois', 10)">Ajouter au panier</button>
 </div>
 
-<footer>
-    © 2026 – Tressage Ailleurs
-</footer>
+<div class="offre">
+    <img src="box-abonnement.jpg" alt="Box 3 mois">
+    <h3>Box – 3 mois</h3>
+    <p><strong>24 €</strong></p>
+    <button onclick="ajouter('Box abonnement – 3 mois', 24)">Ajouter au panier</button>
+</div>
 
-<!-- BOUTON PANIER FLOTTANT -->
-<a href="panier.html" class="panier-flottant">🛒 Panier</a>
+<div class="offre">
+    <img src="box-abonnement.jpg" alt="Box 6 mois">
+    <h3>Box – 6 mois</h3>
+    <p><strong>34 €</strong></p>
+    <button onclick="ajouter('Box abonnement – 6 mois', 34)">Ajouter au panier</button>
+</div>
+
+</main>
 
 <script>
-/* AFFICHAGE DES PRIX */
-document.getElementById("prix1").textContent = PRIX_ABO_1 + " €";
-document.getElementById("prix3").textContent = PRIX_ABO_3 + " €";
-document.getElementById("prix6").textContent = PRIX_ABO_6 + " €";
-
-/* AJOUT AU PANIER */
-function ajouterAuPanier(nom, prix) {
+function ajouter(nom, prix){
     let panier = JSON.parse(localStorage.getItem("panier")) || [];
-    panier.push({
-        nom: nom,
-        prix: prix,
-        image: "box-abonnement.jpg"
-    });
+    panier.push({ nom, prix, image:"box-abonnement.jpg" });
     localStorage.setItem("panier", JSON.stringify(panier));
     alert("Abonnement ajouté au panier");
 }
