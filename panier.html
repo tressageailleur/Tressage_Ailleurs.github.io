@@ -238,16 +238,20 @@ function recalculer(){
 
 function appliquerPromo(){
     remise = 0;
-    fraisFixes = 3;
-    const code = document.getElementById("codePromo").value.trim().toUpperCase();
 
-    if(code === "TRESSAGE"){
-        remise = panier.reduce((s,p)=>s+p.prix,0) * 0.10;
-          fraisFixes = 0;
-        alert("Livraison offerte");
+    const code = document.getElementById("codePromo").value
+                  .trim()
+                  .toUpperCase();
+
+    const totalProduits = panier.reduce((s,p)=>s + p.prix, 0);
+
+    if(code === "TRESSAGE10"){
+        remise = totalProduits * 0.10; // ✅ -10 %
+        alert("✅ Code TRESSAGE10 appliqué : -10 %");
     }else{
         alert("Code invalide");
     }
+
     recalculer();
 }
 
