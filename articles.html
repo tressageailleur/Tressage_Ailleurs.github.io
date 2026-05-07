@@ -2,170 +2,64 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Tressage Ailleurs – Articles</title>
+<title>Articles – Tressage Ailleurs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* BASE */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f6f1ee;
-    color: #333;
-}
+body { margin:0; font-family:Arial; background:#f6f1ee; color:#333; }
+header { background:#3a2d28; color:white; text-align:center; padding:30px; }
+header img { width:180px; margin-bottom:10px; }
+nav { background:#5a463d; padding:15px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+nav a { background:white; color:#3a2d28; padding:10px 18px; border-radius:8px; text-decoration:none; font-weight:bold; }
 
-/* HEADER */
-header {
-    background: #3a2d28;
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-/* MENU ULTRA LISIBLE */
-nav {
-    background: #5a463d;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-nav a {
-    background: #ffffff;
-    color: #3a2d28;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-nav a:hover {
-    background: #e8ddd7;
-}
-
-/* CONTENU */
-.container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 40px 20px;
-}
-
-/* ARTICLES */
-.articles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-}
-
-.article {
-    background: white;
-    border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    overflow: hidden;
-    text-align: center;
-}
-
-/* IMAGE */
-.article img {
-    width: 100%;
-    height: 220px;
-    object-fit: contain;
-    background: #eee;
-}
-
-/* TEXTE */
-.article .texte {
-    padding: 20px;
-}
-
-.prix {
-    font-weight: bold;
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-/* BOUTON */
-button {
-    background: #3a2d28;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-button:hover {
-    background: #5a463d;
-}
+main { max-width:1000px; margin:40px auto; padding:0 20px; }
+.produits { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; }
+.produit { background:white; padding:20px; border-radius:12px; text-align:center; }
+.produit img { width:100%; height:200px; object-fit:contain; background:#eee; }
+button { margin-top:10px; padding:10px 18px; background:#3a2d28; color:white; border:none; border-radius:6px; cursor:pointer; }
 </style>
-
-<script>
-/* PRIX MODIFIABLES PAR TOI */
-const PRIX_ARTICLE_1 = 2;
-const PRIX_ARTICLE_2 = 3;
-</script>
 </head>
 
 <body>
 
 <header>
-    <h1>Articles</h1>
-    <p>Créations artisanales</p>
+  <img src="logo.png" alt="Logo Tressage Ailleurs">
+  <h1>Articles</h1>
 </header>
 
 <nav>
-    <a href="index.html">Accueil</a>
-    <a href="presentation.html">Présentation</a>
-    <a href="articles.html">Articles</a>
-    <a href="abonnements.html">Abonnements</a>
-    <a href="panier.html">🛒 Panier</a>
+  <a href="index.html">Accueil</a>
+  <a href="articles.html">Articles</a>
+  <a href="abonnements.html">Abonnements</a>
+  <a href="panier.html">Panier</a>
 </nav>
 
-<div class="container">
-    <div class="articles">
+<main>
+  <div class="produits">
 
-        <!-- ARTICLE 1 -->
-        <div class="article">
-            <img src="article1.jpg" alt="Bracelet brésilien">
-            <div class="texte">
-                <h3>Bracelet brésilien</h3>
-                <p class="prix" id="prix1"></p>
-                <button onclick="ajouterAuPanier('Bracelet brésilien', PRIX_ARTICLE_1, 'article1.jpg')">
-                    Ajouter au panier
-                </button>
-            </div>
-        </div>
-
-        <!-- ARTICLE 2 -->
-        <div class="article">
-            <img src="article2.jpg" alt="Création textile">
-            <div class="texte">
-                <h3>Création textile</h3>
-                <p class="prix" id="prix2"></p>
-                <button onclick="ajouterAuPanier('Création textile', PRIX_ARTICLE_2, 'article2.jpg')">
-                    Ajouter au panier
-                </button>
-            </div>
-        </div>
-
+    <div class="produit">
+      <img src="article1.jpg" alt="Article 1">
+      <h3>Bracelet tressé</h3>
+      <p>5 €</p>
+      <button onclick="ajouter('Bracelet tressé',5,'article1.jpg')">Ajouter au panier</button>
     </div>
-</div>
+
+    <div class="produit">
+      <img src="article2.jpg" alt="Article 2">
+      <h3>Création textile</h3>
+      <p>8 €</p>
+      <button onclick="ajouter('Création textile',8,'article2.jpg')">Ajouter au panier</button>
+    </div>
+
+  </div>
+</main>
 
 <script>
-/* AFFICHAGE PRIX */
-document.getElementById("prix1").textContent = PRIX_ARTICLE_1 + " €";
-document.getElementById("prix2").textContent = PRIX_ARTICLE_2 + " €";
-
-/* AJOUT AU PANIER */
-function ajouterAuPanier(nom, prix, image) {
-    let panier = JSON.parse(localStorage.getItem("panier")) || [];
-    panier.push({ nom, prix, image });
-    localStorage.setItem("panier", JSON.stringify(panier));
-    alert("Article ajouté au panier");
+function ajouter(nom, prix, image){
+  let panier = JSON.parse(localStorage.getItem("panier")) || [];
+  panier.push({ nom, prix, image });
+  localStorage.setItem("panier", JSON.stringify(panier));
+  alert("Ajouté au panier");
 }
 </script>
 
