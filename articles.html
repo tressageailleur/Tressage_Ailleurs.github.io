@@ -6,6 +6,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+.menu-filtre{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin:30px 0;
+    flex-wrap:wrap;
+}
+
+.menu-filtre button{
+    padding:10px 18px;
+    background:#3a2d28;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
 body { margin:0; font-family:Arial; background:#f6f1ee; color:#333; }
 header { background:#3a2d28; color:white; text-align:center; padding:30px; }
 header img { width:180px; margin-bottom:10px; }
@@ -35,60 +52,67 @@ button { margin-top:10px; padding:10px 18px; background:#3a2d28; color:white; bo
 </nav>
 
 <main>
+<div class="menu-filtre">
+    <button onclick="filtrerCategorie('tous')">Tous</button>
+    <button onclick="filtrerCategorie('boucles')">Boucles d’oreilles</button>
+    <button onclick="filtrerCategorie('bracelets')">Bracelets</button>
+    <button onclick="filtrerCategorie('charmes')">Charmes</button>
+</div>
+
   <div class="produits">
 
-    <div class="produit">
+    <div class="produit" data-categorie="bracelets">
       <img src="article1.jpg" alt="Article 1">
       <h3>Bracelet tressé</h3>
       <p> 1 €</p>
       <button onclick="ajouter('Bracelet tressé',1,'article1.jpg')">Ajouter au panier</button>
     </div>
 
-    <div class="produit">
+    <div class="produit" data-categorie="boucles">
       <img src="article2.jpg" alt="Article 2">
       <h3>Création textile</h3>
       <p> 2.50 €</p>
       <button onclick="ajouter('Création textile',2.50,'article2.jpg')">Ajouter au panier</button>
     </div>
 
-    <div class="produit">
-      <img src="article3.jpg" alt="Coeur Sucré">
-      <h3>Coeur Sucré</h3>
+    <div class="produit" data-categorie="boucles">
+      <img src="article3.jpg" alt="Collier fait main">
+      <h3>Collier fait main</h3>
       <p>Prix : 2.50 €</p>
-      <button onclick="ajouter('Coeur Sucré', 2.50, 'Coeur Sucré')">Ajouter au panier</button>      
+      <button onclick="ajouter('Collier fait main', 2.50, 'article3.jpg')">Ajouter au panier</button>      
    </div>
 
-   <div class="produit">
+   <div class="produit" data-categorie="boucles">
       <img src="article4.jpg" alt="Collier fait main">
-      <h3>Amour Eternel</h3>
+      <h3>Collier fait main</h3>
       <p>Prix : 2.50 €</p>
       <button onclick="ajouter('Collier fait main', 2.50, 'article3.jpg')">Ajouter au panier</button>      
    </div>
 
-   <div class="produit">
+   <div class="produit" data-categorie="boucles">
       <img src="article5.jpg" alt="Collier fait main">
-      <h3>Rouge Passions</h3>
+      <h3>Collier fait main</h3>
       <p>Prix : 2.50 €</p>
       <button onclick="ajouter('Collier fait main', 2.50, 'article3.jpg')">Ajouter au panier</button>      
    </div>
 
-   <div class="produit">
+   <div class="produit" data-categorie="boucles">
       <img src="article6.jpg" alt="Collier fait main">
-      <h3>Amour Sauvage</h3>
+      <h3>Collier fait main</h3>
       <p>Prix : 2.50 €</p>
       <button onclick="ajouter('Collier fait main', 2.50, 'article3.jpg')">Ajouter au panier</button>      
    </div>
 
-   <div class="produit">
+   <div class="produit" data-categorie="boucles">
       <img src="article7.jpg" alt="Collier fait main">
-      <h3>Elexir D'amour</h3>
+      <h3>Collier fait main</h3>
       <p>Prix : 2.50 €</p>
       <button onclick="ajouter('Collier fait main', 2.50, 'article3.jpg')">Ajouter au panier</button>      
    </div>
 
-   <div class="produit">
+   <div class="produit" data-categorie="boucles">
       <img src="article8.jpg" alt="Collier fait main">
-      <h3>Passion Rose</h3>
+      <h3>Collier fait main</h3>
       <p>Prix : 2.50 €</p>
       <button onclick="ajouter('Collier fait main', 2.50, 'article3.jpg')">Ajouter au panier</button>      
    </div>
@@ -103,7 +127,34 @@ function ajouter(nom, prix, image){
   localStorage.setItem("panier", JSON.stringify(panier));
   alert("Ajouté au panier");
 }
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Sélection de tous les produits
+    const produits = document.querySelectorAll(".produit");
+
+    // Fonction de filtrage
+    window.filtrerCategorie = function(categorie) {
+
+        produits.forEach(function(produit) {
+
+            const cat = produit.getAttribute("data-categorie");
+
+            if (categorie === "tous" || cat === categorie) {
+                produit.style.display = "block";
+            } else {
+                produit.style.display = "none";
+            }
+        });
+    };
+
+    // Affiche tout par défaut au chargement
+    window.filtrerCategorie("tous");
+});
+
+</script>
 </script>
 
 </body>
-</html>
