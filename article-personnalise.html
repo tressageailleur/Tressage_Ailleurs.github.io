@@ -18,21 +18,35 @@ header{
   text-align:center;
   padding:30px;
 }
+
+/* ✅ MENU RESPONSIVE (SEUL CHANGEMENT) */
 nav{
   background:#5a463d;
-  padding:15px;
+  padding:12px;
   display:flex;
   justify-content:center;
-  gap:12px;
+  gap:10px;
+  flex-wrap:wrap;        /* permet retour à la ligne */
 }
 nav a{
   background:white;
   color:#3a2d28;
-  padding:10px 18px;
+  padding:10px 16px;
   border-radius:8px;
   text-decoration:none;
   font-weight:bold;
+  font-size:14px;
+  white-space:nowrap;    /* empêche coupure du texte */
 }
+
+/* ✅ affichage propre mobile : 2 par ligne */
+@media (max-width:600px){
+  nav a{
+    flex:1 1 48%;
+    text-align:center;
+  }
+}
+
 main{
   max-width:600px;
   margin:40px auto;
@@ -107,13 +121,13 @@ button{
   </select>
 </div>
 
-<!-- BRACELET (FORME SEULE) -->
+<!-- BRACELET -->
 <div id="blocBracelet" class="hidden">
   <label>Forme du bracelet</label>
   <input id="formeBracelet" placeholder="Ex : rond, torsadé, cœur">
 </div>
 
-<!-- CHARME (TAILLE + FORME) -->
+<!-- CHARME -->
 <div id="blocCharme" class="hidden">
   <label>Taille du charme</label>
   <select id="tailleCharme">
@@ -173,16 +187,13 @@ document.getElementById("ajouter").addEventListener("click", () => {
   if(type === "boucle"){
     nom += " / Attache : " + document.getElementById("attache").value;
   }
-
   if(type === "bracelet"){
     nom += " / Forme : " + document.getElementById("formeBracelet").value;
   }
-
   if(type === "charme"){
     nom += " / Taille : " + document.getElementById("tailleCharme").value;
     nom += " / Forme : " + document.getElementById("formeCharme").value;
   }
-
   if(message) nom += " / Message : " + message;
 
   let panier = JSON.parse(localStorage.getItem("panier")) || [];
