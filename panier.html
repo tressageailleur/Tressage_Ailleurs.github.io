@@ -255,6 +255,14 @@ function appliquerPromo(){
     recalculer();
 }
 
+<div class="client-info">
+    <label>Nom & Prénom</label>
+    <input id="nomPrenom" placeholder="Votre nom et prénom">
+
+    <label>Adresse de livraison</label>
+    <input id="adresse" placeholder="Adresse complète">
+</div>
+    
 function supprimer(index){
     panier.splice(index,1);
     localStorage.setItem("panier", JSON.stringify(panier));
