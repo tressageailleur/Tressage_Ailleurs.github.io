@@ -264,15 +264,34 @@ function supprimer(index){
 /* ✅ ENVOI PAR EMAIL */
 function finaliserCommande(){
     if(panier.length === 0){
-        alert("Votre panier est vide");
+       Commande = document.getElementById("total").textContent;        alert("Votre panier est vide");
+
+    if(!nomPrenom || !adresse){
+        alert("Merci de renseigner votre nom et votre adresse de livraison.");
         return;
     }
 
-    let message = "Nouvelle commande – Tressage Ailleurs\n\n";
-    panier.forEach(p=>{
+    let message = "🧶 Nouvelle commande – Tressage Ailleurs\n\n";
+
+    message += "👤 Client :\n";
+    message += nomPrenom + "\n\n";
+
+    message += "📦 Adresse de livraison :\n";
+    message += adresse + "\n\n";
+
+    message += "🛍️ Produits :\n";
+    panier.forEach(p => {
         message += `- ${p.nom} : ${p.prix} €\n`;
     });
-    message += "\nTOTAL : " + document.getElementById("total").textContent;
+
+    message += "\n🚚 Frais de livraison : " + fraisLivraison;
+    message += "\n💶 TOTAL : " + totalCommande;
+
+    message += "\n\n────────────────────────\n";
+    message += "Tressage Ailleurs\n";
+    message += "✨ Créations artisanales\n";
+    message += "Logo : https://ton-site.github.io/logo.png";
+    message += "\n────────────────────────";
 
     window.location.href =
         "mailto:Tressageailleur@gmail.com"
@@ -280,9 +299,17 @@ function finaliserCommande(){
         + "&body=" + encodeURIComponent(message);
 
     localStorage.removeItem("panier");
+
     document.getElementById("zonePanier").style.display = "none";
     document.getElementById("confirmation").style.display = "block";
 }
+        return;
+    }
+
+    const nomPrenom = document.getElementById("nomPrenom").value.trim();
+    const adresse = document.getElementById("adresse").value.trim();
+    const fraisLivraison = document.getElementById("frais").textContent;
+
 
 afficherPanier();
 </script>
