@@ -45,13 +45,6 @@ header img{
   text-align:center;
 }
 
-/* Menu mobile empilé */
-@media(max-width:600px){
-  .menu{
-    flex-direction:column;
-  }
-}
-
 /* CONTENU */
 main{
   max-width:600px;
@@ -206,7 +199,7 @@ nbFils.addEventListener("change", ()=>{
 
     const input=document.createElement("input");
     input.className="infoFil";
-    input.placeholder="Ex : centre, gauche, Droite";
+    input.placeholder="Ex : centre, gauche, Droite, ";
 
     const select=document.createElement("select");
     select.className="couleurFil";
