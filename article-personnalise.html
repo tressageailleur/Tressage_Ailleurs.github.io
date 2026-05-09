@@ -14,36 +14,33 @@ body{
 }
 header{
   background:#3a2d28;
-  color:#fff;
+  color:white;
   text-align:center;
   padding:30px;
 }
 
-/* ✅ MENU RESPONSIVE (SEUL CHANGEMENT) */
+/* MENU */
 nav{
   background:#5a463d;
   padding:12px;
   display:flex;
   justify-content:center;
   gap:10px;
-  flex-wrap:wrap;        /* permet retour à la ligne */
 }
 nav a{
   background:white;
   color:#3a2d28;
-  padding:10px 16px;
+  padding:12px 18px;
   border-radius:8px;
   text-decoration:none;
   font-weight:bold;
-  font-size:14px;
-  white-space:nowrap;    /* empêche coupure du texte */
+  text-align:center;
 }
 
-/* ✅ affichage propre mobile : 2 par ligne */
+/* MOBILE : empilement vertical */
 @media (max-width:600px){
-  nav a{
-    flex:1 1 48%;
-    text-align:center;
+  nav{
+    flex-direction:column;
   }
 }
 
@@ -64,8 +61,8 @@ select, input, textarea{
   padding:10px;
   margin-top:6px;
 }
-textarea{ resize:none; }
-.hidden{ display:none; }
+textarea{resize:none;}
+.hidden{display:none;}
 button{
   width:100%;
   margin-top:25px;
@@ -86,7 +83,8 @@ button{
   <p>Créez votre bijou sur mesure</p>
 </header>
 
-<nav>
+<!-- ✅ MENU 100 % VALIDE -->
+<nav class="menu">
   <a href="index.html">Accueil</a>
   <a href="articles.html">Articles</a>
   <a href="abonnements.html">Abonnements</a>
@@ -112,7 +110,6 @@ button{
   <option>Marron</option>
 </select>
 
-<!-- BOUCLE -->
 <div id="blocBoucle" class="hidden">
   <label>Type d’attache</label>
   <select id="attache">
@@ -121,13 +118,11 @@ button{
   </select>
 </div>
 
-<!-- BRACELET -->
 <div id="blocBracelet" class="hidden">
   <label>Forme du bracelet</label>
-  <input id="formeBracelet" placeholder="Ex : rond, torsadé, cœur">
+  <input id="formeBracelet">
 </div>
 
-<!-- CHARME -->
 <div id="blocCharme" class="hidden">
   <label>Taille du charme</label>
   <select id="tailleCharme">
@@ -135,12 +130,11 @@ button{
     <option>Moyen</option>
     <option>Grand</option>
   </select>
-
   <label>Forme du charme</label>
-  <input id="formeCharme" placeholder="Ex : cœur, étoile, rond">
+  <input id="formeCharme">
 </div>
 
-<label>Message (optionnel – 30 caractères)</label>
+<label>Message personnalisé</label>
 <textarea id="message" maxlength="30"></textarea>
 
 <button id="ajouter">Ajouter au panier</button>
@@ -148,60 +142,26 @@ button{
 </main>
 
 <script>
-const typeSelect = document.getElementById("type");
-const blocBoucle = document.getElementById("blocBoucle");
-const blocBracelet = document.getElementById("blocBracelet");
-const blocCharme = document.getElementById("blocCharme");
+const typeSelect=document.getElementById("type");
+const b1=document.getElementById("blocBoucle");
+const b2=document.getElementById("blocBracelet");
+const b3=document.getElementById("blocCharme");
 
-typeSelect.addEventListener("change", () => {
-  blocBoucle.classList.add("hidden");
-  blocBracelet.classList.add("hidden");
-  blocCharme.classList.add("hidden");
-
-  if(typeSelect.value === "boucle"){
-    blocBoucle.classList.remove("hidden");
-  }
-  if(typeSelect.value === "bracelet"){
-    blocBracelet.classList.remove("hidden");
-  }
-  if(typeSelect.value === "charme"){
-    blocCharme.classList.remove("hidden");
-  }
+typeSelect.addEventListener("change",()=>{
+  b1.classList.add("hidden");
+  b2.classList.add("hidden");
+  b3.classList.add("hidden");
+  if(typeSelect.value==="boucle") b1.classList.remove("hidden");
+  if(typeSelect.value==="bracelet") b2.classList.remove("hidden");
+  if(typeSelect.value==="charme") b3.classList.remove("hidden");
 });
 
-document.getElementById("ajouter").addEventListener("click", () => {
-  const type = typeSelect.value;
-  if(!type) return alert("Merci de choisir un type de bijou.");
-
-  const couleur = document.getElementById("couleur").value;
-  const message = document.getElementById("message").value.trim();
-
-  let prix = 0;
-  if(type === "boucle") prix = 4;
-  if(type === "bracelet") prix = 2;
-  if(type === "charme") prix = 1;
-  if(message !== "") prix += 1;
-
-  let nom = "Article personnalisé - " + type + " / " + couleur;
-
-  if(type === "boucle"){
-    nom += " / Attache : " + document.getElementById("attache").value;
-  }
-  if(type === "bracelet"){
-    nom += " / Forme : " + document.getElementById("formeBracelet").value;
-  }
-  if(type === "charme"){
-    nom += " / Taille : " + document.getElementById("tailleCharme").value;
-    nom += " / Forme : " + document.getElementById("formeCharme").value;
-  }
-  if(message) nom += " / Message : " + message;
-
-  let panier = JSON.parse(localStorage.getItem("panier")) || [];
-  panier.push({ nom, prix, image:"logo.png" });
-  localStorage.setItem("panier", JSON.stringify(panier));
-
+document.getElementById("ajouter").onclick=()=>{
+  let panier=JSON.parse(localStorage.getItem("panier"))||[];
+  panier.push({nom:"Article personnalisé",prix:1,image:"logo.png"});
+  localStorage.setItem("panier",JSON.stringify(panier));
   alert("Article bien ajouté au panier ✅");
-});
+};
 </script>
 
 </body>
