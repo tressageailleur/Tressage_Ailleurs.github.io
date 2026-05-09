@@ -93,11 +93,13 @@ nav a{
     padding-top:10px;
 }
 
-/* PROMO */
-.promo input{
+/* PROMO & FORM */
+.promo input,
+.client-info input{
     width:100%;
     padding:8px;
     margin-top:5px;
+    margin-bottom:10px;
 }
 
 .promo button,
@@ -148,7 +150,6 @@ nav a{
     <p>Récapitulatif de votre commande</p>
 </header>
 
-<!-- ✅ MENU CORRECT ET VISIBLE -->
 <nav>
     <a href="index.html">Accueil</a>
     <a href="articles.html">Articles</a>
@@ -169,12 +170,20 @@ nav a{
         <h2>Résumé</h2>
 
         <p><span>Sous‑total</span><span id="sousTotal">0 €</span></p>
-        <p><span>Frais</span><span id="frais">0 €</span></p>
+        <p><span>Frais de livraison</span><span id="frais">0 €</span></p>
 
         <div class="promo">
             <label>Code promotionnel</label>
-            <input id="codePromo" placeholder="tressage10">
+            <input id="codePromo" placeholder="TRESSAGE10">
             <button onclick="appliquerPromo()">Appliquer</button>
+        </div>
+
+        <div class="client-info">
+            <label>Nom et prénom</label>
+            <input id="nomPrenom" placeholder="Nom Prénom">
+
+            <label>Adresse de livraison</label>
+            <input id="adresseLivraison" placeholder="Adresse complète">
         </div>
 
         <p class="total"><span>Total</span><span id="total">0 €</span></p>
@@ -226,80 +235,70 @@ function afficherPanier(){
 }
 
 function recalculer(){
-    let sousTotal = panier.reduce((s,p)=>s+p.prix,0) - remise;
+    let sousBrut = panier.reduce((s,p)=>s+p.prix,0);
+    let sousTotal = sousBrut - remise;
     if(sousTotal < 0) sousTotal = 0;
 
     document.getElementById("sousTotal").textContent = sousTotal.toFixed(2)+" €";
     document.getElementById("frais").textContent =
-        panier.length ? fraisFixes+" €" : "0 €";
+        panier.length ? fraisFixes.toFixed(2)+" €" : "0 €";
     document.getElementById("total").textContent =
         (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
 }
 
+/* ✅ PROMO -10 % */
 function appliquerPromo(){
     remise = 0;
-
-    const code = document.getElementById("codePromo").value
-                  .trim()
-                  .toUpperCase();
-
-    const totalProduits = panier.reduce((s,p)=>s + p.prix, 0);
+    const code = document.getElementById("codePromo").value.trim().toUpperCase();
+    const totalProduits = panier.reduce((s,p)=>s+p.prix,0);
 
     if(code === "TRESSAGE10"){
-        remise = totalProduits * 0.10; // ✅ -10 %
-        alert("✅ Code TRESSAGE10 appliqué : -10 %");
+        remise = totalProduits * 0.10;
+        alert("✅ Code TRESSAGE10 appliqué (-10 %)");
     }else{
         alert("Code invalide");
     }
-
     recalculer();
 }
 
-<div class="client-info">
-    <label>Nom & Prénom</label>
-    <input id="nomPrenom" placeholder="Votre nom et prénom">
-
-    <label>Adresse de livraison</label>
-    <input id="adresse" placeholder="Adresse complète">
-</div>
-    
 function supprimer(index){
     panier.splice(index,1);
     localStorage.setItem("panier", JSON.stringify(panier));
     afficherPanier();
 }
 
-/* ✅ ENVOI PAR EMAIL */
+/* ✅ EMAIL COMPLET */
 function finaliserCommande(){
     if(panier.length === 0){
-       Commande = document.getElementById("total").textContent;        alert("Votre panier est vide");
-
-    if(!nomPrenom || !adresse){
-        alert("Merci de renseigner votre nom et votre adresse de livraison.");
+        alert("Votre panier est vide");
         return;
     }
 
-    let message = "🧶 Nouvelle commande – Tressage Ailleurs\n\n";
+    const nomPrenom = document.getElementById("nomPrenom").value.trim();
+    const adresse = document.getElementById("adresseLivraison").value.trim();
 
-    message += "👤 Client :\n";
-    message += nomPrenom + "\n\n";
+    if(!nomPrenom || !adresse){
+        alert("Merci de renseigner votre nom et votre adresse.");
+        return;
+    }
 
-    message += "📦 Adresse de livraison :\n";
-    message += adresse + "\n\n";
+    let message = "Nouvelle commande – Tressage Ailleurs\n\n";
+    message += "Client :\n" + nomPrenom + "\n\n";
+    message += "Adresse de livraison :\n" + adresse + "\n\n";
+    message += "Produits :\n";
 
-    message += "🛍️ Produits :\n";
-    panier.forEach(p => {
+    panier.forEach(p=>{
         message += `- ${p.nom} : ${p.prix} €\n`;
     });
 
-    message += "\n🚚 Frais de livraison : " + fraisLivraison;
-    message += "\n💶 TOTAL : " + totalCommande;
+    message += "\nFrais de livraison : " + document.getElementById("frais").textContent;
+    message += "\nTOTAL : " + document.getElementById("total").textContent;
 
-    message += "\n\n────────────────────────\n";
+    message += "\n\n───────────────\n";
     message += "Tressage Ailleurs\n";
-    message += "✨ Créations artisanales\n";
-    message += "Logo : https://ton-site.github.io/logo.png";
-    message += "\n────────────────────────";
+    message += "Créations artisanales\n";
+    message += "Logo : https://ton-site.github.io/logo.png\n";
+    message += "───────────────";
 
     window.location.href =
         "mailto:Tressageailleur@gmail.com"
@@ -307,17 +306,9 @@ function finaliserCommande(){
         + "&body=" + encodeURIComponent(message);
 
     localStorage.removeItem("panier");
-
     document.getElementById("zonePanier").style.display = "none";
     document.getElementById("confirmation").style.display = "block";
 }
-        return;
-    }
-
-    const nomPrenom = document.getElementById("nomPrenom").value.trim();
-    const adresse = document.getElementById("adresse").value.trim();
-    const fraisLivraison = document.getElementById("frais").textContent;
-
 
 afficherPanier();
 </script>
