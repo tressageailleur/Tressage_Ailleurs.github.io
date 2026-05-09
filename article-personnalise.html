@@ -12,31 +12,47 @@ body{
   background:#f6f1ee;
   color:#333;
 }
+
+/* HEADER */
 header{
   background:#3a2d28;
   color:white;
   text-align:center;
   padding:30px;
 }
+header img{
+  max-width:120px;
+  display:block;
+  margin:0 auto 10px;
+}
 
 /* MENU */
-nav{
-    background:#5a463d;
-    padding:15px;
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
+.menu{
+  background:#5a463d;
+  padding:15px;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.menu a{
+  background:white;
+  color:#3a2d28;
+  padding:10px 18px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:bold;
+  text-align:center;
 }
 
-nav a{
-    background:white;
-    color:#3a2d28;
-    padding:10px 18px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:bold;
+/* Menu mobile empilé */
+@media(max-width:600px){
+  .menu{
+    flex-direction:column;
+  }
 }
+
+/* CONTENU */
 main{
   max-width:600px;
   margin:40px auto;
@@ -44,18 +60,22 @@ main{
   padding:25px;
   border-radius:12px;
 }
+
 label{
   display:block;
   margin-top:18px;
   font-weight:bold;
 }
+
 select, input, textarea{
   width:100%;
   padding:10px;
   margin-top:6px;
 }
+
 textarea{resize:none;}
 .hidden{display:none;}
+
 button{
   width:100%;
   margin-top:25px;
@@ -72,11 +92,11 @@ button{
 <body>
 
 <header>
+  <img src="logo.png" alt="Logo">
   <h1>Article personnalisé</h1>
   <p>Créez votre bijou sur mesure</p>
 </header>
 
-<!-- ✅ MENU 100 % VALIDE -->
 <nav class="menu">
   <a href="index.html">Accueil</a>
   <a href="articles.html">Articles</a>
@@ -94,40 +114,62 @@ button{
   <option value="charme">Charme – 1 €</option>
 </select>
 
-<label>Couleur</label>
-<select id="couleur">
-  <option>Rouge</option>
-  <option>Rose</option>
-  <option>Gris</option>
-  <option>Vert foncé</option>
-  <option>Marron</option>
-</select>
-
+<!-- BOUCLES -->
 <div id="blocBoucle" class="hidden">
   <label>Type d’attache</label>
   <select id="attache">
     <option>Créole</option>
     <option>Crochet</option>
   </select>
+
+  <label>Couleur</label>
+  <select id="couleurBoucle">
+    <option>Rouge</option>
+    <option>Rose</option>
+    <option>Gris</option>
+    <option>Noir</option>
+  </select>
 </div>
 
+<!-- BRACELET -->
 <div id="blocBracelet" class="hidden">
+
+  <label>Nombre de fils</label>
+  <select id="nbFils">
+    <option value="">— Choisir —</option>
+    <option value="3">3 fils</option>
+    <option value="4">4 fils</option>
+    <option value="5">5 fils</option>
+    <option value="6">6 fils</option>
+    <option value="7">7 fils</option>
+    <option value="8">8 fils</option>
+    <option value="9">9 fils</option>
+  </select>
+
+  <div id="filsContainer"></div>
+
   <label>Forme du bracelet</label>
-  <input id="formeBracelet">
+  <input id="formeBracelet" placeholder="Ex : torsadé, plat">
 </div>
 
-<div id="blocCharme" class="hidden">
-  <label>Taille du charme</label>
-  <select id="tailleCharme">
-    <option>Petit</option>
-    <option>Moyen</option>
+<!-- CHARME -->
+<div id="blocCharme" class="on>Moyen</option>
     <option>Grand</option>
   </select>
-  <label>Forme du charme</label>
+
+  <label>Forme</label>
   <input id="formeCharme">
+
+  <label>Couleur</label>
+  <select id="couleurCharme">
+    <option>Rouge</option>
+    <option>Rose</option>
+    <option>Gris</option>
+    <option>Noir</option>
+  </select>
 </div>
 
-<label>Message personnalisé</label>
+<label>Message personnalisé (optionnel – 30 caractères)</label>
 <textarea id="message" maxlength="30"></textarea>
 
 <button id="ajouter">Ajouter au panier</button>
@@ -135,26 +177,71 @@ button{
 </main>
 
 <script>
-const typeSelect=document.getElementById("type");
-const b1=document.getElementById("blocBoucle");
-const b2=document.getElementById("blocBracelet");
-const b3=document.getElementById("blocCharme");
+const type = document.getElementById("type");
+const blocBoucle = document.getElementById("blocBoucle");
+const blocBracelet = document.getElementById("blocBracelet");
+const blocCharme = document.getElementById("blocCharme");
+const filsContainer = document.getElementById("filsContainer");
 
-typeSelect.addEventListener("change",()=>{
-  b1.classList.add("hidden");
-  b2.classList.add("hidden");
-  b3.classList.add("hidden");
-  if(typeSelect.value==="boucle") b1.classList.remove("hidden");
-  if(typeSelect.value==="bracelet") b2.classList.remove("hidden");
-  if(typeSelect.value==="charme") b3.classList.remove("hidden");
+const couleurs = ["Rouge","Rose","Gris","Noir","Blanc","Bleu","Vert","Jaune","Violet","Marron"];
+
+type.addEventListener("change", () => {
+  blocBoucle.classList.add("hidden");
+  blocBracelet.classList.add("hidden");
+  blocCharme.classList.add("hidden");
+
+  if(type.value === "boucle") blocBoucle.classList.remove("hidden");
+  if(type.value === "bracelet") blocBracelet.classList.remove("hidden");
+  if(type.value === "charme") blocCharme.classList.remove("hidden");
 });
 
-document.getElementById("ajouter").onclick=()=>{
+nbFils.addEventListener("change", ()=>{
+  filsContainer.innerHTML="";
+  const nb = nbFils.value;
+  if(!nb) return;
+
+  for(let i=1;i<=nb;i++){
+    const label=document.createElement("label");
+    label.textContent="Fil "+i+" – indication";
+
+    const input=document.createElement("input");
+    input.className="infoFil";
+    input.placeholder="Ex : centre, gauche, Droite";
+
+    const select=document.createElement("select");
+    select.className="couleurFil";
+    couleurs.forEach(c=>{
+      const opt=document.createElement("option");
+      opt.textContent=c;
+      select.appendChild(opt);
+    });
+
+    filsContainer.appendChild(label);
+    filsContainer.appendChild(input);
+    filsContainer.appendChild(select);
+  }
+});
+
+ajouter.addEventListener("click", ()=>{
+  let prix = type.value==="boucle"?4:type.value==="bracelet"?2:1;
+  if(message.value.trim()) prix++;
+
+  let nom="Article personnalisé - "+type.value;
+
+  if(type.value==="bracelet"){
+    nom+=" / "+nbFils.value+" fils";
+    document.querySelectorAll(".infoFil").forEach((i,idx)=>{
+      nom+=" / Fil "+(idx+1)+" ("+i.value+") : "+
+        document.querySelectorAll(".couleurFil")[idx].value;
+    });
+    nom+=" / Forme : "+formeBracelet.value;
+  }
+
   let panier=JSON.parse(localStorage.getItem("panier"))||[];
-  panier.push({nom:"Article personnalisé",prix:1,image:"logo.png"});
+  panier.push({nom,prix,image:"logo.png"});
   localStorage.setItem("panier",JSON.stringify(panier));
   alert("Article bien ajouté au panier ✅");
-};
+});
 </script>
 
 </body>
