@@ -249,16 +249,24 @@ function recalculer(){
 
 /* ✅ PROMO -10 % */
 function appliquerPromo(){
-    remise = 0;
     const code = document.getElementById("codePromo").value.trim().toUpperCase();
-    const totalProduits = panier.reduce((s,p)=>s+p.prix,0);
+    const totalProduits = panier.reduce((s, p) => s + Number(p.prix), 0);
+
+    remise = 0; // ✅ reset propre
 
     if(code === "TRESSAGE10"){
         remise = totalProduits * 0.10;
         alert("✅ Code TRESSAGE10 appliqué (-10 %)");
-    }else{
-        alert("Code invalide");
     }
+    else if(code === "COLLABORATION"){
+        remise = totalProduits * 0.30;
+        alert("✅ Code Collaboration appliqué (-30 %)");
+    }
+    else{
+        alert("Code invalide");
+        return; // ✅ on sort
+    }
+
     recalculer();
 }
 
