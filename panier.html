@@ -12,16 +12,12 @@ body{
     background:#f6f1ee;
     color:#333;
 }
-
-/* HEADER */
 header{
     background:#3a2d28;
     color:white;
     padding:30px;
     text-align:center;
 }
-
-/* MENU */
 nav{
     background:#5a463d;
     padding:15px;
@@ -38,28 +34,22 @@ nav a{
     text-decoration:none;
     font-weight:bold;
 }
-
-/* CONTENEUR */
 .container{
     max-width:1000px;
     margin:auto;
     padding:30px;
 }
-
-/* PANIER */
 .panier{
     display:grid;
     grid-template-columns:2fr 1fr;
     gap:25px;
 }
-
 .produits,
 .resume{
     background:white;
     padding:20px;
     border-radius:12px;
 }
-
 .produit{
     display:flex;
     justify-content:space-between;
@@ -67,10 +57,6 @@ nav a{
     border-bottom:1px solid #ddd;
     padding:10px 0;
 }
-.produit:last-child{
-    border-bottom:none;
-}
-
 .supprimer{
     background:none;
     border:none;
@@ -78,22 +64,17 @@ nav a{
     font-size:18px;
     cursor:pointer;
 }
-
-/* RÉSUMÉ */
 .resume p{
     display:flex;
     justify-content:space-between;
     margin:8px 0;
 }
-
 .total{
     font-weight:bold;
     font-size:18px;
     border-top:2px solid #3a2d28;
     padding-top:10px;
 }
-
-/* PROMO & FORM */
 .promo input,
 .client-info input{
     width:100%;
@@ -101,7 +82,6 @@ nav a{
     margin-top:5px;
     margin-bottom:10px;
 }
-
 .promo button,
 .action button{
     width:100%;
@@ -113,15 +93,11 @@ nav a{
     border-radius:6px;
     cursor:pointer;
 }
-
-/* PANIER VIDE */
 .vide{
     text-align:center;
     font-style:italic;
     color:#666;
 }
-
-/* CONFIRMATION */
 .confirmation{
     display:none;
     background:white;
@@ -129,12 +105,6 @@ nav a{
     border-radius:12px;
     text-align:center;
 }
-.confirmation h2{
-    margin-top:0;
-    color:#3a2d28;
-}
-
-/* RESPONSIVE */
 @media(max-width:800px){
     .panier{
         grid-template-columns:1fr;
@@ -162,46 +132,43 @@ nav a{
 
 <div id="zonePanier" class="panier">
 
-    <div class="produits">
-        <h2>Produits</h2>
-        <div id="listeProduits"></div>
+<div class="produits">
+    <h2>Produits</h2>
+    <div id="listeProduits"></div>
+</div>
+
+<div class="resume">
+    <h2>Résumé</h2>
+
+    <p><span>Sous-total</span><span id="sousTotal">0 €</span></p>
+    <p><span>Frais de livraison</span><span id="frais">0 €</span></p>
+
+    <div class="promo">
+        <label>Code promotionnel</label>
+        <input id="codePromo" placeholder="TRESSAGE10">
+        <button onclick="appliquerPromo()">Appliquer</button>
     </div>
 
-    <div class="resume">
-        <h2>Résumé</h2>
+    <div class="client-info">
+        <label>Nom et prénom</label>
+        <input id="nomPrenom" placeholder="Nom Prénom">
 
-        <p><span>Sous‑total</span><span id="sousTotal">0 €</span></p>
-        <p><span>Frais de livraison</span><span id="frais">0 €</span></p>
-
-        <div class="promo">
-            <label>Code promotionnel</label>
-            <input id="codePromo" placeholder="TRESSAGE10">
-            <button onclick="appliquerPromo()">Appliquer</button>
-        </div>
-
-        <div class="client-info">
-            <label>Nom et prénom</label>
-            <input id="nomPrenom" placeholder="Nom Prénom">
-
-            <label>Adresse de livraison</label>
-            <input id="adresseLivraison" placeholder="Adresse complète">
-        </div>
-
-        <p class="total"><span>Total</span><span id="total">0 €</span></p>
-
-        <div class="action">
-            <button onclick="finaliserCommande()">Finaliser la commande</button>
-        </div>
+        <label>Adresse de livraison</label>
+        <input id="adresseLivraison" placeholder="Adresse complète">
     </div>
+
+    <p class="total"><span>Total</span><span id="total">0 €</span></p>
+
+    <div class="action">
+        <button onclick="finaliserCommande()">Finaliser la commande</button>
+    </div>
+</div>
 
 </div>
 
 <div id="confirmation" class="confirmation">
     <h2>Merci pour votre commande</h2>
-    <p>
-        Un email s’est ouvert pour confirmer la commande.<br>
-        Vous pouvez maintenant nous contacter si besoin.
-    </p>
+    <p>Un email s’est ouvert pour confirmer la commande.</p>
 </div>
 
 </div>
@@ -209,8 +176,15 @@ nav a{
 <script>
 let panier = JSON.parse(localStorage.getItem("panier")) || [];
 let remise = 0;
-let fraisFixes = 3;
 const zone = document.getElementById("listeProduits");
+
+/* ✅ FRAIS DE LIVRAISON */
+function calculerFraisLivraison(nb){
+    if(nb === 0) return 0;
+    if(nb >= 10) return 0;
+    if(nb <= 3) return 3;
+    return 3 + (nb - 3);
+}
 
 function afficherPanier(){
     zone.innerHTML = "";
@@ -236,23 +210,22 @@ function afficherPanier(){
 }
 
 function recalculer(){
-    let sousBrut = panier.reduce((s,p)=>s+p.prix,0);
-    let sousTotal = sousBrut - remise;
-    if(sousTotal < 0) sousTotal = 0;
+    let brut = panier.reduce((s,p)=>s+p.prix,0);
+    let sousTotal = Math.max(0, brut - remise);
+    let frais = calculerFraisLivraison(panier.length);
 
     document.getElementById("sousTotal").textContent = sousTotal.toFixed(2)+" €";
     document.getElementById("frais").textContent =
-        panier.length ? fraisFixes.toFixed(2)+" €" : "0 €";
+        frais === 0 ? "Offert" : frais.toFixed(2)+" €";
     document.getElementById("total").textContent =
-        (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
+        (sousTotal + frais).toFixed(2)+" €";
 }
 
-/* ✅ PROMO -10 % */
+/* ✅ CODES PROMO */
 function appliquerPromo(){
+    remise = 0;
     const code = document.getElementById("codePromo").value.trim().toUpperCase();
-    const totalProduits = panier.reduce((s, p) => s + Number(p.prix), 0);
-
-    remise = 0; // ✅ reset propre
+    const totalProduits = panier.reduce((s,p)=>s+p.prix,0);
 
     if(code === "TRESSAGE10"){
         remise = totalProduits * 0.10;
@@ -260,13 +233,12 @@ function appliquerPromo(){
     }
     else if(code === "COLLABORATION"){
         remise = totalProduits * 0.30;
-        alert("✅ Code Collaboration appliqué (-30 %)");
+        alert("✅ Code COLLABORATION appliqué (-30 %)");
     }
     else{
-        alert("Code invalide");
-        return; // ✅ on sort
+        alert("❌ Code invalide");
+        return;
     }
-
     recalculer();
 }
 
@@ -306,7 +278,6 @@ function finaliserCommande(){
     message += "\n\n───────────────\n";
     message += "Tressage Ailleurs\n";
     message += "Créations artisanales\n";
-    message += "Logo : https://ton-site.github.io/logo.png\n";
     message += "───────────────";
 
     window.location.href =
