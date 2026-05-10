@@ -121,19 +121,6 @@ nav a{
     color:#666;
 }
 
-/* CONFIRMATION */
-.confirmation{
-    display:none;
-    background:white;
-    padding:40px;
-    border-radius:12px;
-    text-align:center;
-}
-.confirmation h2{
-    margin-top:0;
-    color:#3a2d28;
-}
-
 /* RESPONSIVE */
 @media(max-width:800px){
     .panier{
@@ -151,60 +138,62 @@ nav a{
 </header>
 
 <nav>
-    <a href="index.html">Accueil</a>
-    <a href="articles.html">Articles</a>
-    <a href="article-personnalise.html">Article personnalisé</a>
-    <a href="abonnements.html">Abonnements</a>
-    <a href="panier.html">Panier</a>
+  <a href="index.html">Accueil</a>
+  <a href="articles.html">Articles</a>
+  <a href="article-personnalise.html">Article personnalisé</a>
+  <a href="abonnements.html">Abonnements</a>
+  <a href="panier.html">Panier</a>
 </nav>
 
 <div class="container">
 
-<div id="zonePanier" class="panier">
+<div class="panier">
 
-    <div class="produits">
-        <h2>Produits</h2>
-        <div id="listeProduits"></div>
+<div class="produits">
+    <h2>Produits</h2>
+    <div id="listeProduits"></div>
+</div>
+
+<div class="resume">
+    <h2>Résumé</h2>
+
+    <p><span>Sous‑total</span><span id="sousTotal">0 €</span></p>
+    <p><span>Frais de livraison</span><span id="frais">0 €</span></p>
+
+    <div class="promo">
+        <label>Code promotionnel</label>
+        <input id="codePromo" placeholder="TRESSAGE10">
+        <button onclick="appliquerPromo()">Appliquer</button>
     </div>
 
-    <div class="resume">
-        <h2>Résumé</h2>
+    <div class="client-info">
+        <label>Nom et prénom</label>
+        <input id="nomPrenom">
 
-        <p><span>Sous‑total</span><span id="sousTotal">0 €</span></p>
-        <p><span>Frais de livraison</span><span id="frais">0 €</span></p>
-
-        <div class="promo">
-            <label>Code promotionnel</label>
-            <input id="codePromo" placeholder="TRESSAGE10">
-            <button onclick="appliquerPromo()">Appliquer</button>
-        </div>
-
-        <div class="client-info">
-            <label>Nom et prénom</label>
-            <input id="nomPrenom" placeholder="Nom Prénom">
-
-            <label>Adresse de livraison</label>
-            <input id="adresseLivraison" placeholder="Adresse complète">
-        </div>
-
-        <p class="total"><span>Total</span><span id="total">0 €</span></p>
-
-        <div class="action">
-            <button onclick="finaliserCommande()">Finaliser la commande</button>
-        </div>
+        <label>Adresse de livraison</label>
+        <input id="adresseLivraison">
     </div>
 
-</div>
+    <p class="total"><span>Total</span><span id="total">0 €</span></p>
 
-<div id="confirmation" class="confirmation">
-    <h2>Merci pour votre commande</h2>
-    <p>
-        Un email s’est ouvert pour confirmer la commande.<br>
-        Vous pouvez maintenant nous contacter si besoin.
-    </p>
+    <div class="action">
+        <button onclick="finaliserCommande()">Finaliser la commande</button>
+    </div>
 </div>
 
 </div>
+</div>
+
+<!-- ✅ FORMULAIRE PAYPAL (CORRECT ET FONCTIONNEL) -->
+<form id="paypalForm" method="post" action="https://www.paypal.com/cgi-bin/webscr" style="display:none">
+    <input type="hidden" name="cmd" value="_xclick">
+    <input type="hidden" name="business" value="Tressageailleur@gmail.com">
+    <input type="hidden" name="item_name" value="Commande Tressage Ailleurs">
+    <input type="hidden" name="currency_code" value="EUR">
+    <input type="hidden" name="amount" id="paypalAmount">
+    <input type="hidden" name="return" value="https://Tressage_Ailleurs.github.io/merci.html">
+    <input type="hidden" name="cancel_return" value="panier.html">
+</form>
 
 <script>
 let panier = JSON.parse(localStorage.getItem("panier")) || [];
@@ -226,7 +215,7 @@ function afficherPanier(){
         <div class="produit">
             <span>${p.nom}</span>
             <div>
-                <span>${p.prix} €</span>
+                <span>${Number(p.prix).toFixed(2)} €</span>
                 <button class="supprimer" onclick="supprimer(${i})">❌</button>
             </div>
         </div>`;
@@ -236,7 +225,7 @@ function afficherPanier(){
 }
 
 function recalculer(){
-    let sousBrut = panier.reduce((s,p)=>s+p.prix,0);
+    let sousBrut = panier.reduce((s,p)=>s + Number(p.prix), 0);
     let sousTotal = sousBrut - remise;
     if(sousTotal < 0) sousTotal = 0;
 
@@ -247,11 +236,10 @@ function recalculer(){
         (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
 }
 
-/* ✅ PROMO -10 % */
 function appliquerPromo(){
     remise = 0;
     const code = document.getElementById("codePromo").value.trim().toUpperCase();
-    const totalProduits = panier.reduce((s,p)=>s+p.prix,0);
+    const totalProduits = panier.reduce((s,p)=>s + Number(p.prix),0);
 
     if(code === "TRESSAGE10"){
         remise = totalProduits * 0.10;
@@ -268,47 +256,18 @@ function supprimer(index){
     afficherPanier();
 }
 
-/* ✅ EMAIL COMPLET */
 function finaliserCommande(){
     if(panier.length === 0){
         alert("Votre panier est vide");
         return;
     }
-
-    const nomPrenom = document.getElementById("nomPrenom").value.trim();
-    const adresse = document.getElementById("adresseLivraison").value.trim();
-
-    if(!nomPrenom || !adresse){
+    if(!nomPrenom.value || !adresseLivraison.value){
         alert("Merci de renseigner votre nom et votre adresse.");
         return;
     }
-
-    let message = "Nouvelle commande – Tressage Ailleurs\n\n";
-    message += "Client :\n" + nomPrenom + "\n\n";
-    message += "Adresse de livraison :\n" + adresse + "\n\n";
-    message += "Produits :\n";
-
-    panier.forEach(p=>{
-        message += `- ${p.nom} : ${p.prix} €\n`;
-    });
-
-    message += "\nFrais de livraison : " + document.getElementById("frais").textContent;
-    message += "\nTOTAL : " + document.getElementById("total").textContent;
-
-    message += "\n\n───────────────\n";
-    message += "Tressage Ailleurs\n";
-    message += "Créations artisanales\n";
-    message += "Logo : https://ton-site.github.io/logo.png\n";
-    message += "───────────────";
-
-    window.location.href =
-        "mailto:Tressageailleur@gmail.com"
-        + "?subject=" + encodeURIComponent("Nouvelle commande – Tressage Ailleurs")
-        + "&body=" + encodeURIComponent(message);
-
-    localStorage.removeItem("panier");
-    document.getElementById("zonePanier").style.display = "none";
-    document.getElementById("confirmation").style.display = "block";
+    const total = Number(document.getElementById("total").textContent.replace("€",""));
+    document.getElementById("paypalAmount").value = total.toFixed(2);
+    document.getElementById("paypalForm").submit();
 }
 
 afficherPanier();
