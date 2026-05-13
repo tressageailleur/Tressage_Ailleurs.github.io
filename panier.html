@@ -236,18 +236,25 @@ function recalculer(){
         (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
 }
 
+/* ✅ CODES PROMO (DEMANDÉ) */
 function appliquerPromo(){
-    remise = 0;
-    const code = document.getElementById("codePromo").value.trim().toUpperCase();
-    const totalProduits = panier.reduce((s,p)=>s + Number(p.prix),0);
+remise = 0;
+const code = document.getElementById("codePromo").value.trim().toUpperCase();
+const totalProduits = panier.reduce((s,p)=>s + Number(p.prix),0);
 
-    if(code === "TRESSAGE10"){
-        remise = totalProduits * 0.10;
-        alert("✅ Code TRESSAGE10 appliqué (-10 %)");
-    }else{
-        alert("Code invalide");
-    }
-    recalculer();
+if(code === "TRESSAGE10"){
+remise = totalProduits * 0.10;
+alert("✅ Code TRESSAGE10 appliqué (-10 %)");
+}
+else if(code === "COLLABORATION"){
+remise = totalProduits * 0.30;
+alert("✅ Code COLLABORATION appliqué (-30 %)");
+}
+else{
+alert("❌ Code invalide");
+}
+
+recalculer();
 }
 
 function supprimer(index){
