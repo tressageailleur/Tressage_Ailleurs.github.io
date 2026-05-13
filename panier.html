@@ -1,4 +1,5 @@
-<!DOCTYPE html><!DOCTYPE html="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <title>Tressage Ailleurs – Panier</title>
@@ -12,78 +13,84 @@ body{
     color:#333;
 }
 
-/* ✅ BANDEAU PLUS VISIBLE + PLUS LENT */
-.bandeau {
-    background: linear-gradient(90deg, #ff9900, #ff3d00);
+/* ✅ BANDEAU */
+.bandeau{
+    background:linear-gradient(90deg,#ff9900,#ff3d00);
     color:white;
     font-weight:bold;
-    font-size:18px;
-    padding:12px 0;
+    font-size:16px;
+    padding:10px;
     overflow:hidden;
-    white-space:nowrap;
 }
 .bandeau span{
-    display:inline-block;
-    padding-left:100%;
-    animation:defile 30s linear infinite; /* ✅ LENT */
+    display:block;
+    white-space:nowrap;
+    animation:defile 30s linear infinite;
 }
 @keyframes defile{
-    0%{transform:translateX(0);}
-    100%{transform:translateX(-100%);}
+    0%{transform:translateX(100%)}
+    100%{transform:translateX(-100%)}
 }
 
 /* HEADER */
 header{
     background:#3a2d28;
     color:white;
-    padding:30px;
+    padding:25px;
     text-align:center;
 }
 
-/* MENU */
+/* ✅ MENU CORRIGÉ */
 nav{
     background:#5a463d;
-    padding:15px;
+    padding:10px;
     display:flex;
     justify-content:center;
-    gap:12px;
+    gap:10px;
     flex-wrap:wrap;
 }
 nav a{
     background:white;
     color:#3a2d28;
-    padding:10px 18px;
-    border-radius:8px;
+    padding:8px 14px;
+    border-radius:6px;
     text-decoration:none;
     font-weight:bold;
 }
 
+/* CONTENEUR */
 .container{
     max-width:1000px;
     margin:auto;
-    padding:30px;
+    padding:20px;
 }
 
+/* PANIER */
 .panier{
     display:grid;
     grid-template-columns:2fr 1fr;
-    gap:25px;
+    gap:20px;
 }
 
+/* BLOCS */
 .produits,
 .resume{
     background:white;
-    padding:20px;
-    border-radius:12px;
+    padding:15px;
+    border-radius:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
 }
 
+/* ✅ PRODUITS PLUS PROPRES */
 .produit{
     display:flex;
     justify-content:space-between;
-    border-bottom:1px solid #ddd;
-    padding:10px 0;
+    align-items:center;
+    padding:10px;
+    border-bottom:1px solid #eee;
 }
 
+/* SUPPRIMER */
 .supprimer{
     background:none;
     border:none;
@@ -91,9 +98,11 @@ nav a{
     cursor:pointer;
 }
 
+/* ✅ RÉSUMÉ */
 .resume p{
     display:flex;
     justify-content:space-between;
+    margin:10px 0;
 }
 
 .total{
@@ -103,35 +112,69 @@ nav a{
     padding-top:10px;
 }
 
+/* ✅ INPUT PROPRE */
 input{
     width:100%;
-    padding:8px;
-    margin:6px 0;
+    padding:10px;
+    margin:8px 0;
+    border-radius:6px;
+    border:1px solid #ccc;
 }
 
+/* ✅ BOUTON PRO */
 button{
     width:100%;
-    padding:10px;
+    padding:12px;
     background:#3a2d28;
     color:white;
     border:none;
+    border-radius:6px;
     cursor:pointer;
 }
 
+/* PANIER VIDE */
 .vide{
     text-align:center;
+    font-style:italic;
     color:#666;
+}
+
+/* ✅ MOBILE */
+@media(max-width:800px){
+
+    .panier{
+        grid-template-columns:1fr;
+    }
+
+    nav{
+        overflow:auto;
+        justify-content:flex-start;
+    }
+
+    nav a{
+        flex:0 0 auto;
+        font-size:13px;
+        padding:8px;
+    }
+
+    .produit{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .produit span{
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ✅ BANDEAU -->
 <div class="bandeau">
-    <span>
-        🔥 PROMO TRESSAGE AILLEURS -10% 🔥 | ⚠️ Mobile : utilisez la navigation privée pour payer 📱
-    </span>
+<span>🔥 PROMO TRESSAGE AILLEURS -10% 🔥 | ⚠️ Mobile : utilisez navigation privée 📱</span>
 </div>
 
 <header>
@@ -139,6 +182,7 @@ button{
 <p>Récapitulatif de votre commande</p>
 </header>
 
+<!-- ✅ MENU FIX -->
 <nav>
 <a href="index.html">Accueil</a>
 <a href="articles.html">Articles</a>
@@ -204,7 +248,7 @@ zone.innerHTML += `
 <div class="produit">
 <span>${p.nom}</span>
 <span>${Number(p.prix).toFixed(2)} € 
-<button onclick="supprimer(${i})">❌</button>
+<button class="supprimer" onclick="supprimer(${i})">❌</button>
 </span>
 </div>`;
 });
@@ -228,7 +272,7 @@ const sousTotal=document.getElementById("sousTotal");
 const fraisEl=document.getElementById("frais");
 const total=document.getElementById("total");
 
-/* ✅ PROMOS CORRIGÉES */
+/* ✅ PROMOS */
 function appliquerPromo(){
 let code=document.getElementById("codePromo").value.toLowerCase().replace(/\s+/g,"");
 let totalProduits = panier.reduce((s,p)=>s+Number(p.prix),0);
@@ -258,7 +302,7 @@ function finaliserCommande(){
 if(!panier.length) return alert("Panier vide");
 
 paypalAmount.value = total.textContent.replace(" €","");
-paypalForm.submit();
+document.getElementById("paypalForm").submit();
 }
 
 afficherPanier();
@@ -266,4 +310,3 @@ afficherPanier();
 
 </body>
 </html>
-``
