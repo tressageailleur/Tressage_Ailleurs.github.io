@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><!DOCTYPE html="fr">
 <head>
 <meta charset="UTF-8">
 <title>Tressage Ailleurs – Panier</title>
@@ -11,6 +10,26 @@ body{
     font-family:Arial,sans-serif;
     background:#f6f1ee;
     color:#333;
+}
+
+/* ✅ BANDEAU PLUS VISIBLE + PLUS LENT */
+.bandeau {
+    background: linear-gradient(90deg, #ff9900, #ff3d00);
+    color:white;
+    font-weight:bold;
+    font-size:18px;
+    padding:12px 0;
+    overflow:hidden;
+    white-space:nowrap;
+}
+.bandeau span{
+    display:inline-block;
+    padding-left:100%;
+    animation:defile 30s linear infinite; /* ✅ LENT */
+}
+@keyframes defile{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
 }
 
 /* HEADER */
@@ -39,14 +58,12 @@ nav a{
     font-weight:bold;
 }
 
-/* CONTENEUR */
 .container{
     max-width:1000px;
     margin:auto;
     padding:30px;
 }
 
-/* PANIER */
 .panier{
     display:grid;
     grid-template-columns:2fr 1fr;
@@ -63,27 +80,20 @@ nav a{
 .produit{
     display:flex;
     justify-content:space-between;
-    align-items:center;
     border-bottom:1px solid #ddd;
     padding:10px 0;
-}
-.produit:last-child{
-    border-bottom:none;
 }
 
 .supprimer{
     background:none;
     border:none;
     color:#a00;
-    font-size:18px;
     cursor:pointer;
 }
 
-/* RÉSUMÉ */
 .resume p{
     display:flex;
     justify-content:space-between;
-    margin:8px 0;
 }
 
 .total{
@@ -93,56 +103,48 @@ nav a{
     padding-top:10px;
 }
 
-/* PROMO & FORM */
-.promo input,
-.client-info input{
+input{
     width:100%;
     padding:8px;
-    margin-top:5px;
-    margin-bottom:10px;
+    margin:6px 0;
 }
 
-.promo button,
-.action button{
+button{
     width:100%;
-    margin-top:10px;
     padding:10px;
     background:#3a2d28;
     color:white;
     border:none;
-    border-radius:6px;
     cursor:pointer;
 }
 
-/* PANIER VIDE */
 .vide{
     text-align:center;
-    font-style:italic;
     color:#666;
-}
-
-/* RESPONSIVE */
-@media(max-width:800px){
-    .panier{
-        grid-template-columns:1fr;
-    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- ✅ BANDEAU -->
+<div class="bandeau">
+    <span>
+        🔥 PROMO TRESSAGE AILLEURS -10% 🔥 | ⚠️ Mobile : utilisez la navigation privée pour payer 📱
+    </span>
+</div>
+
 <header>
-    <h1>Votre panier</h1>
-    <p>Récapitulatif de votre commande</p>
+<h1>Votre panier</h1>
+<p>Récapitulatif de votre commande</p>
 </header>
 
 <nav>
-  <a href="index.html">Accueil</a>
-  <a href="articles.html">Articles</a>
-  <a href="article-personnalise.html">Article personnalisé</a>
-  <a href="abonnements.html">Abonnements</a>
-  <a href="panier.html">Panier</a>
+<a href="index.html">Accueil</a>
+<a href="articles.html">Articles</a>
+<a href="article-personnalise.html">Article personnalisé</a>
+<a href="abonnements.html">Abonnements</a>
+<a href="panier.html">Panier</a>
 </nav>
 
 <div class="container">
@@ -150,136 +152,113 @@ nav a{
 <div class="panier">
 
 <div class="produits">
-    <h2>Produits</h2>
-    <div id="listeProduits"></div>
+<h2>Produits</h2>
+<div id="listeProduits"></div>
 </div>
 
 <div class="resume">
-    <h2>Résumé</h2>
+<h2>Résumé</h2>
 
-    <p><span>Sous‑total</span><span id="sousTotal">0 €</span></p>
-    <p><span>Frais de livraison</span><span id="frais">0 €</span></p>
+<p><span>Sous‑total</span><span id="sousTotal">0 €</span></p>
+<p><span>Frais livraison</span><span id="frais">0 €</span></p>
 
-    <div class="promo">
-        <label>Code promotionnel</label>
-        <input id="codePromo" placeholder="TRESSAGE10">
-        <button onclick="appliquerPromo()">Appliquer</button>
-    </div>
+<input id="codePromo" placeholder="TRESSAGE10 ou COLLABORATION">
+<button onclick="appliquerPromo()">Appliquer</button>
 
-    <div class="client-info">
-        <label>Nom et prénom</label>
-        <input id="nomPrenom">
+<input id="nomPrenom" placeholder="Nom prénom">
+<input id="adresseLivraison" placeholder="Adresse">
 
-        <label>Adresse de livraison</label>
-        <input id="adresseLivraison">
-    </div>
+<p class="total"><span>Total</span><span id="total">0 €</span></p>
 
-    <p class="total"><span>Total</span><span id="total">0 €</span></p>
-
-    <div class="action">
-        <button onclick="finaliserCommande()">Finaliser la commande</button>
-    </div>
-</div>
+<button onclick="finaliserCommande()">Finaliser la commande</button>
 
 </div>
 </div>
+</div>
 
-<!-- ✅ FORMULAIRE PAYPAL OPTIMISÉ POUR MOBILE -->
+<!-- ✅ PAYPAL -->
 <form id="paypalForm" method="post" action="https://www.paypal.com/cgi-bin/webscr" style="display:none">
 <input type="hidden" name="cmd" value="_xclick">
 <input type="hidden" name="business" value="Tressageailleur@gmail.com">
 <input type="hidden" name="item_name" value="Commande Tressage Ailleurs">
 <input type="hidden" name="currency_code" value="EUR">
 <input type="hidden" name="amount" id="paypalAmount">
-<input type="hidden" name="return" value="https://Tressage_Ailleurs.github.io/merci.html">
-<input type="hidden" name="cancel_return" value="panier.html">
-
-<!-- AJOUTS POUR LE PAIEMENT PAR CARTE SANS COMPTE -->
-<input type="hidden" name="solution_type" value="Sole">
-<input type="hidden" name="landing_page" value="Billing">
-<input type="hidden" name="lc" value="FR">
 </form>
 
 <script>
 let panier = JSON.parse(localStorage.getItem("panier")) || [];
 let remise = 0;
-let fraisFixes = 3;
-const zone = document.getElementById("listeProduits");
 
 function afficherPanier(){
-    zone.innerHTML = "";
+let zone = document.getElementById("listeProduits");
+zone.innerHTML = "";
 
-    if(panier.length === 0){
-        zone.innerHTML = "<p class='vide'>Votre panier est vide</p>";
-        recalculer();
-        return;
-    }
-
-    panier.forEach((p,i)=>{
-        zone.innerHTML += `
-        <div class="produit">
-            <span>${p.nom}</span>
-            <div>
-                <span>${Number(p.prix).toFixed(2)} €</span>
-                <button class="supprimer" onclick="supprimer(${i})">❌</button>
-            </div>
-        </div>`;
-    });
-
-    recalculer();
+if(panier.length === 0){
+zone.innerHTML = "<p class='vide'>Panier vide</p>";
+recalculer();
+return;
 }
 
-function recalculer(){
-    let sousBrut = panier.reduce((s,p)=>s + Number(p.prix), 0);
-    let sousTotal = sousBrut - remise;
-    if(sousTotal < 0) sousTotal = 0;
-
-    document.getElementById("sousTotal").textContent = sousTotal.toFixed(2)+" €";
-    document.getElementById("frais").textContent =
-        panier.length ? fraisFixes.toFixed(2)+" €" : "0 €";
-    document.getElementById("total").textContent =
-        (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
-}
-
-/* ✅ CODES PROMO (DEMANDÉ) */
-function appliquerPromo(){
-remise = 0;
-const code = document.getElementById("codePromo").value.trim().toUpperCase();
-const totalProduits = panier.reduce((s,p)=>s + Number(p.prix),0);
-
-if(code === "TRESSAGE10"){
-remise = totalProduits * 0.10;
-alert("✅ Code TRESSAGE10 appliqué (-10 %)");
-}
-else if(code === "COLLABORATION"){
-remise = totalProduits * 0.30;
-alert("✅ Code COLLABORATION appliqué (-30 %)");
-}
-else{
-alert("❌ Code invalide");
-}
+panier.forEach((p,i)=>{
+zone.innerHTML += `
+<div class="produit">
+<span>${p.nom}</span>
+<span>${Number(p.prix).toFixed(2)} € 
+<button onclick="supprimer(${i})">❌</button>
+</span>
+</div>`;
+});
 
 recalculer();
 }
 
-function supprimer(index){
-    panier.splice(index,1);
-    localStorage.setItem("panier", JSON.stringify(panier));
-    afficherPanier();
+function recalculer(){
+let totalProduits = panier.reduce((s,p)=>s+Number(p.prix),0);
+let sous = totalProduits - remise;
+if(sous<0) sous=0;
+
+let frais = panier.length ? 3 : 0;
+
+sousTotal.textContent = sous.toFixed(2)+" €";
+fraisEl.textContent = frais ? frais.toFixed(2)+" €":"0 €";
+total.textContent = (sous+frais).toFixed(2)+" €";
+}
+
+const sousTotal=document.getElementById("sousTotal");
+const fraisEl=document.getElementById("frais");
+const total=document.getElementById("total");
+
+/* ✅ PROMOS CORRIGÉES */
+function appliquerPromo(){
+let code=document.getElementById("codePromo").value.toLowerCase().replace(/\s+/g,"");
+let totalProduits = panier.reduce((s,p)=>s+Number(p.prix),0);
+
+if(code==="tressage10"){
+remise = totalProduits*0.10;
+alert("✅ -10%");
+}
+else if(code==="collaboration" || code==="collab"){
+remise = totalProduits*0.30;
+alert("✅ -30%");
+}
+else{
+remise=0;
+alert("❌ Code invalide");
+}
+recalculer();
+}
+
+function supprimer(i){
+panier.splice(i,1);
+localStorage.setItem("panier",JSON.stringify(panier));
+afficherPanier();
 }
 
 function finaliserCommande(){
-    if(panier.length === 0){
-        alert("Votre panier est vide");
-        return;
-    }
-    if(!nomPrenom.value || !adresseLivraison.value){
-        alert("Merci de renseigner votre nom et votre adresse.");
-        return;
-    }
-    const total = Number(document.getElementById("total").textContent.replace("€",""));
-    document.getElementById("paypalAmount").value = total.toFixed(2);
-    document.getElementById("paypalForm").submit();
+if(!panier.length) return alert("Panier vide");
+
+paypalAmount.value = total.textContent.replace(" €","");
+paypalForm.submit();
 }
 
 afficherPanier();
@@ -287,3 +266,4 @@ afficherPanier();
 
 </body>
 </html>
+``
