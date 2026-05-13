@@ -200,25 +200,21 @@ nav a{
 </div>
 </div>
 
-<!-- ✅ FORMULAIRE PAYPAL CORRECT -->
+<!-- ✅ PAYPAL -->
 <form id="paypalForm" method="post" action="https://www.paypal.com/cgi-bin/webscr">
 
-    <input type="hidden" name="cmd" value="_xclick">
-    <input type="hidden" name="business" value="Tressageailleur@gmail.com">
-    <input type="hidden" name="item_name" value="Commande Tressage Ailleurs">
-    <input type="hidden" name="currency_code" value="EUR">
-    <input type="hidden" name="amount" id="paypalAmount">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="Tressageailleur@gmail.com">
+<input type="hidden" name="item_name" value="Commande Tressage Ailleurs">
+<input type="hidden" name="currency_code" value="EUR">
+<input type="hidden" name="amount" id="paypalAmount">
 
-    <!-- ✅ redirection après paiement -->
-    <input type="hidden" name="return" value="https://tressageailleurs.github.io/merci.html">
+<input type="hidden" name="return" value="https://tressageailleurs.github.io/merci.html">
+<input type="hidden" name="cancel_return" value="panier.html">
 
-    <!-- ✅ retour si annulation -->
-    <input type="hidden" name="cancel_return" value="panier.html">
-
-    <!-- ✅ paiement sans compte -->
-    <input type="hidden" name="solution_type" value="Sole">
-    <input type="hidden" name="landing_page" value="Billing">
-    <input type="hidden" name="lc" value="FR">
+<input type="hidden" name="solution_type" value="Sole">
+<input type="hidden" name="landing_page" value="Billing">
+<input type="hidden" name="lc" value="FR">
 
 </form>
 
@@ -263,7 +259,6 @@ function recalculer(){
         (sousTotal + (panier.length ? fraisFixes : 0)).toFixed(2)+" €";
 }
 
-/* ✅ CODES PROMO (DEMANDÉ) */
 function appliquerPromo(){
 remise = 0;
 const code = document.getElementById("codePromo").value.trim().toUpperCase();
@@ -290,7 +285,9 @@ function supprimer(index){
     afficherPanier();
 }
 
+/* ✅ SEULE MODIFICATION */
 function finaliserCommande(){
+
     if(panier.length === 0){
         alert("Votre panier est vide");
         return;
@@ -299,18 +296,37 @@ function finaliserCommande(){
         alert("Merci de renseigner votre nom et votre adresse.");
         return;
     }
-    const total = Number(document.getElementById("total").textContent.replace("€",""));
-    document.getElementById("paypalAmount").value = total.toFixed(2);
-    document.getElementById("paypalForm").submit();
+
+    let produits = panier.map(p => p.nom + " (" + p.prix + "€)").join(", ");
+    let total = document.getElementById("total").textContent;
+
+    let mail = "mailto:Tressageailleur@gmail.com"
+    + "?subject=Nouvelle commande"
+    + "&body=" + encodeURIComponent(
+        "Commande Tressage Ailleurs\n\n"
+        + "Nom : " + nomPrenom.value + "\n"
+        + "Adresse : " + adresseLivraison.value + "\n\n"
+        + "Produits : " + produits + "\n"
+        + "Total : " + total
+    );
+
+    window.location.href = mail;
+
+    setTimeout(()=>{
+        document.getElementById("paypalAmount").value =
+        total.replace("€","");
+        document.getElementById("paypalForm").submit();
+    },1500);
 }
 
 afficherPanier();
 </script>
+
 <header>
 <div class="bandeau">
 <span>
 
-&nbsp;&nbsp;&nbsp; ⚠️ Paiement mobile via navigation privée 📱&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Paiement sécurisé via PayPal 💳 &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; ⚠️ Paiement mobile via navigation privée 📱&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;🔥 Promo Tressage10 -10% Jusqu'au 18/05/2026 🔥&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp 🚚 Livraison du Lundi au Vendredi 🚚 &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; ⚠️ Paiement mobile via navigation privée 📱&nbsp;&nbsp;&nbsp;|💳 Paiement sécurisé via PayPal 💳&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp 🚚 Livraison du Lundi au Vendredi 🚚 &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; ⚠️ Paiement mobile via navigation privée 📱&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 💳 Paiement sécurisé via PayPal 💳 &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; ⚠️ Paiement mobile via navigation privée 📱&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp;🔥 Promo Tressage10 -10% Jusqu'au 18/05/2026 🔥&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp 🚚 Livraison du Lundi au Vendredi 🚚 &nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; ⚠️ Paiement mobile via navigation privée 📱&nbsp;&nbsp;&nbsp;|
+⚠️ Paiement mobile via navigation privée 📱 | 💳 Paiement sécurisé via PayPal 💳 | 🔥 Promo Tressage10 -10% Jusqu'au 18/05/2026 🔥 | 🚚 Livraison du Lundi au Vendredi 🚚
 
 </span>
 🎁 Code Promotion Tressage10 Béneficier de 10% sur vos commande jusqu'au 20/05/2026 
