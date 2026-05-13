@@ -200,28 +200,26 @@ nav a{
 </div>
 </div>
 
-<!-- ✅ FORMULAIRE PAYPAL (CORRECT ET FONCTIONNEL) -->
-<!-- ✅ FORMULAIRE PAYPAL OPTIMISÉ POUR MOBILE -->
-<form id="paypalForm" method="post" action="https://www.paypal.com/cgi-bin/webscr" style="display:none">
+<!-- ✅ FORMULAIRE PAYPAL CORRECT -->
+<form id="paypalForm" method="post" action="https://www.paypal.com/cgi-bin/webscr">
+
     <input type="hidden" name="cmd" value="_xclick">
     <input type="hidden" name="business" value="Tressageailleur@gmail.com">
     <input type="hidden" name="item_name" value="Commande Tressage Ailleurs">
     <input type="hidden" name="currency_code" value="EUR">
     <input type="hidden" name="amount" id="paypalAmount">
-    <input type="hidden" name="return" value="https://Tressage_Ailleurs.github.io/merci.html">
-    <input type="hidden" name="cancel_return" value="panier.html">
-<input type="hidden" name="cmd" value="_xclick">
-<input type="hidden" name="business" value="Tressageailleur@gmail.com">
-<input type="hidden" name="item_name" value="Commande Tressage Ailleurs">
-<input type="hidden" name="currency_code" value="EUR">
-<input type="hidden" name="amount" id="paypalAmount">
-<input type="hidden" name="return" value="https://Tressage_Ailleurs.github.io/merci.html">
-<input type="hidden" name="cancel_return" value="panier.html">
 
-<!-- AJOUTS POUR LE PAIEMENT PAR CARTE SANS COMPTE -->
-<input type="hidden" name="solution_type" value="Sole">
-<input type="hidden" name="landing_page" value="Billing">
-<input type="hidden" name="lc" value="FR">
+    <!-- ✅ redirection après paiement -->
+    <input type="hidden" name="return" value="https://tressageailleurs.github.io/merci.html">
+
+    <!-- ✅ retour si annulation -->
+    <input type="hidden" name="cancel_return" value="panier.html">
+
+    <!-- ✅ paiement sans compte -->
+    <input type="hidden" name="solution_type" value="Sole">
+    <input type="hidden" name="landing_page" value="Billing">
+    <input type="hidden" name="lc" value="FR">
+
 </form>
 
 <script>
